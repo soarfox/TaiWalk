@@ -1,0 +1,227 @@
+header {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-evenly;
+	// 因為navbar設為fixed, 故它已脫離正常文件流向, 獨立在另一個圖層上, 因此為了讓主頁面內容不被navbar覆蓋到, 需要設定一定的高度, 故在桌面版解析度時向上推擠80px, 在iPad(含)以下解析度時向上推擠150px
+	padding-top: 80px;
+
+	@include tablet {
+		padding-top: 100px;
+	}
+
+	.intro {
+		padding: 82px 0px 57px 0px;
+		width: 50%;
+
+		@include mobile {
+			width: 100%;
+		}
+
+		h2 {
+			font-weight: 300;
+			font-size: $h1-font-size;
+			color: $Black;
+			line-height: 1.5;
+
+			.yellow_border {
+				border-bottom: 3px solid $Yellow;
+			}
+		}
+
+		h3 {
+			color: $LightGray;
+			font-size: $h4-font-size;
+			font-weight: 400;
+			padding-top: 17px;
+			letter-spacing: 0.03em;
+
+			@include iPad {
+				font-size: $h5-font-size;
+			}
+
+			.taiwan-location-icon {
+				color: $Yellow;
+				padding-right: 5px;
+			}
+		}
+
+		@include tablet {
+			text-align: center;
+			padding: 12px 0px;
+
+			h2 {
+				font-size: $h3-font-size;
+			}
+		}
+	}
+
+	.search-block {
+		display: flex;
+		flex-direction: column;
+		padding: 101px 0px 0px 0px;
+		width: 40%;
+
+		@include tablet {
+			padding: 30px 0px;
+			width: 90%;
+		}
+	}
+
+	/* 因表單元素 (select、input和button)會有瀏覽器預設的樣式, 其中也包含font-family, 因此會覆蓋掉原本繼承自div/body的 font-family設定, 故在此針對元素本身設定font-family即可套用到指定的字型 */
+	.category-selection,
+	.search-keywords {
+		margin: 7px 0px;
+		padding: 12px 30px;
+		border: 1px solid $White-Gray;
+		color: $Green;
+		font-size: $h5-font-size;
+		/* 此字型源自於index.html的<head>內所引用的字體 */
+		font-family: "Noto Sans TC";
+		border-radius: 5px;
+	}
+
+	.category-selection {
+		font-weight: 500;
+	}
+
+	.search-keywords {
+		font-weight: 400;
+	}
+}
+
+// 因為只有index有<header>, 其他分頁沒有, 故navbar遮蓋住網頁內容而需要向上推擠的高度, 在index這一頁會跟其它頁將會有所不同, 故在此另外設立一個div命名為".index-container"並客製化其向上推擠高度 (其餘頁面的.container寫在./config/_container.scss內)
+.index-container {
+	max-width: 1110px;
+	margin: 0 auto;
+
+	@include iPad {
+		padding: 0px 15px;
+	}
+
+	.recent-activity,
+	.scenicSpots,
+	.restaurants,
+	.hotels {
+		padding-bottom: 36px;
+
+		.location-icon {
+			display: inline-block;
+			padding-right: 5px;
+			color: $Gray;
+		}
+	}
+
+	.activity-list {
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		padding-top: 8px;
+
+		.card {
+			background-color: $CardBackground;
+			border: 1px solid $LittleGray;
+			margin-bottom: 12px;
+			border-radius: 12px;
+			display: flex;
+			width: 47%;
+			// 將圖片被hover時會放大的效果之超出框框的部分隱藏掉
+			overflow: hidden;
+
+			@include tablet {
+				width: 100%;
+			}
+
+			.photo {
+				// 為避免API回傳的圖片有大有小, 在此統一設定圖片外層div標籤的寬高比例
+				width: 40%;
+				aspect-ratio: 3 / 2;
+				// 將圖片被hover時會放大的效果之超出框框的部分隱藏掉
+				overflow: hidden;
+				border-radius: 12px 0px 0px 12px;
+				// 因為手機的iOS系統在進行img的transform放大圖片行為, 圖片會短暫出現四周有直角的狀態, 故需要在img{...}元素的父層元素, 加入一個具有有效值的transform, 藉此讓border-radius能夠正常運作而不會出現圖片四周的直角
+				transform: scale(1);
+
+				img {
+					// 使用transition:transform 0.3s;則會造成圖片周圍會出現原本的直角後又瞬間消失, 造成稍微閃爍的效果, 但這對使用者體驗不佳, 故直接改成transition: 0.3s;使得任何CSS屬性的變化, 都將在0.3秒內產生平滑過渡效果, 這樣就不會閃爍
+					transition: 0.3s ;
+					width: 100%;
+					height: 100%;
+					// 確保圖片的寬高比例維持1:1, 讓直式圖片被拉伸或超出邊界
+					aspect-ratio: 1/1;
+					// 按照圖片長寬比例延伸圖片且確保畫面不會有空白
+					object-fit: cover;
+	
+					&:hover, &:active {
+						transform: scale(1.1);
+					}
+				}
+			}
+
+			.container {
+				display: flex;
+				flex-wrap: wrap;
+				width: 60%;
+				flex-direction: column;
+				justify-content: space-between;
+				padding: 0px 15px;
+
+				.date {
+					display: block;
+					color: $LightGray;
+					padding-top: 16px;
+					font-weight: 400;
+
+					@include mobile {
+						font-size: $h6-font-size;
+					}
+				}
+
+				.title {
+					display: block;
+					font-size: $h4-font-size;
+					line-height: 1.5;
+					font-weight: 700;
+					color: $Black;
+					padding-top: 3px;
+
+					@include tablet {
+						font-size: $h6-font-size;
+						padding-bottom: 10%;
+					}
+
+					@include mobile {
+						font-size: $h6-font-size;
+					}
+				}
+
+				.location {
+					padding: 17px 0px 18px 0px;
+					font-weight: 400;
+					display: flex;
+					justify-content: space-between;
+					
+					@include tablet {
+						font-size: $h6-font-size;
+					}
+
+					a {
+						font-weight: 500;
+						text-decoration: none;
+						color: $DeepGreen;
+
+						@include mobile {
+							display: none;
+						}
+
+						&:hover {
+							color: $OrangeRed;
+						}
+					}
+				}
+
+			}
+		}
+	}
+
+	// 首頁內的".scenicSpots .list", ".restaurants .list"和".hotels .list"的基礎樣式寫在./SCSS/component/_list_cards.scss內, 該scss與搜尋結果頁的".list .card{...}"共用
+}

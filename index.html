@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>台灣走走・Tai Walk-全台最新旅遊景點/活動/餐廳/住宿</title>
+  <link rel="shortcut icon" href="./images/icon/web_icon.ico">
+  <meta name="author" content="UI Designer: Breakfast">
+  <meta name="author" content="Website Engineer: Howard">
+  <!-- 使用emmet的縮寫, 輸入meta:desc並按下tab鍵自動生出下方語法 -->
+  <meta name="description" content="各縣市最新的旅遊資訊，包括：旅遊景點、各地活動、私房美食、安心住宿，全部都在這裡了。">
+  <!-- 使用emmet的縮寫, 輸入meta:kw並按下tab鍵自動生出下方語法; 關鍵字放在越前面者則權重越高 -->
+  <meta name="keywords" content="旅遊, 景點, 活動, 餐廳, 住宿">
+  <!-- 使用emmet的縮寫, 輸入link:css並按下tab鍵自動生出下方語法 -->
+  <!-- 不論對方是使用什麼版本的IE瀏覽器, 一律強制以最新版的IE來渲染; 避免對方明明是IE9, 結果卻因為曾經有改到相容性設定而以IE7呈現, 加上這一行程式碼即可完全避免掉這種狀況 -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- 社群軟體盛行的現在, 在通訊或社群軟體上分享網址時都會出現該網站的標題, 縮圖與描述, 透過設定og可以更準確的說明網站的內容, 參考資料為六角學院官方網站的<head>標籤內的<meta>內容, https://www.hexschool.com/ -->
+  <meta property="og:title" content="各縣市最新的旅遊景點/活動/美食/住宿資訊-台灣走走・Tai Walk">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://soarfox.github.io/TaiWalk/">
+  <meta property="og:description" content="各縣市最新的旅遊資訊都在這裡。">
+  <meta property="og:image" content="https://storage.googleapis.com/vue-course-api.appspot.com/cheetah116/1703141041431.jpg?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=GC2wtEtZNrWbhdbvh%2BbfD5pbf59grFkrvKfEdIVanu6mm6rU%2FNoY9JCeBa%2Ff%2BCa8%2BzKZ%2FysOvotHNdPjqxwvp%2B9nUIhJGLW6MrrtrxagptAkuLcqfdo7j6v4SDaUW2grGYpQgwh3OtQEZbrGxL44tu6IbETKGzZDzQIBCAVlkRp5aFAdfLH6hTpwHnNum2QQ%2BLQhvKu%2BY5C%2BfeU5jtg1Zh4orWFL%2B%2FLHjshmciksimmS45jTHo0oP2PAWCPliRbVUCrGBdIquc1NK1Ex5yuHcEeMfgzjyGi5ITkpbTx7n10eul%2FRx2OoOV%2BDHbAZLTLbpHaVGne%2F9ZTb2ELC%2Bi3QMg%3D%3D">
+  <!-- 引用Google font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700&display=swap"
+    rel="stylesheet">
+  <!-- 引用Swiper圖片輪播CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.4/axios.min.js"></script>
+  <link rel="stylesheet" href="./css/all.css">
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="overlay" id="overlay">
+      <img class="loader" id="loader" src="./images/icon/loading-icon.svg" alt="Loading Animation" />
+    </div>
+    <nav class="navbar">
+      <a class="logo" href="index.html">
+        <h1>台灣走走・Tai Walk</h1>
+      </a>
+      <div class="mobile-menu-icon">
+        <img src="./images/icon/menu-mobile.svg" width="50" height="50" alt="背景是淺綠色, 前景是三條白色橫線, 由上至下分別是短、長、短, 代表著menu">
+      </div>
+      <ul class="menu">
+        <li><a href="./ScenicSpot.html" aria-label="前往探索景點的分類畫面">探索景點</a></li>
+        <li><a href="./Activity.html" aria-label="前往近期活動的分類畫面">近期活動</a></li>
+        <li><a href="./Restaurant.html" aria-label="前往品嚐美食的分類畫面">品嚐美食</a></li>
+        <li><a href="./Hotel.html" aria-label="前往安心住宿的分類畫面">安心住宿</a></li>
+      </ul>
+    </nav>
+    <header>
+      <div class="intro">
+        <h2>探索<span class="yellow_border">台灣之美</span><br>
+          讓我們更親近這片土地</h2>
+        <h3><i class="fa-solid fa-location-dot taiwan-location-icon"></i>台灣旅遊景點導覽 <span>Taiwan Travel Guide</span></h3>
+      </div>
+      <form class="search-block" action="./searchResult.html" method="get">
+        <label for="category-selection" class="category"></label>
+        <select class="category-selection" name="category-selection" id="category-selection"
+          aria-label="category-selection">
+          <option selected disabled>請選擇您想搜尋的類別</option>
+          <option value="ScenicSpot">探索景點</option>
+          <option value="Activity">近期活動</option>
+          <option value="Restaurant">品嚐美食</option>
+          <option value="Hotel">安心住宿</option>
+        </select>
+        <input class="search-keywords" type="text" name="keywords" id="keywords" placeholder="請輸入關鍵字或縣市名稱">
+        <button type="submit" class="search-button" name="search-button" aria-label="按下此按鈕進行搜尋">
+          <i class="fa-solid fa-magnifying-glass"></i>搜尋
+        </button>
+      </form>
+    </header>
+    <main class="index-container">
+      <!-- Swiper圖片自動輪播, 參考來源: https://swiperjs.com/demos#autoplay -->
+      <div class="swiper mySwiper narrowsAndPagination">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide banner">
+            <!-- 以下為切版時使用, API串接完成後以JS動態方式生成以下各li內容 -->
+            <!-- <a href="#" aria-label="查看更多有關這個景點的資料">
+              <img class="banner-img" src="./images/index/scenicSpotPhoto/cover.png" width="1110" height="400"
+                alt="俯瞰一座山頭, 其正中央開出一條雙向道柏油路, 沿著這條路開車將能夠一直往另一座山的側邊開過去">
+              <div class="title" id="banner-title">
+                <span class="city-Name">新北市</span>　|　
+                <span class="scenicSpot-Name">不厭亭</span>
+              </div>
+            </a> -->
+          </div>
+          <div class="swiper-slide banner">
+            <!-- 以下為切版時使用, API串接完成後以JS動態方式生成以下各li內容 -->
+            <!-- <a href="#" aria-label="查看更多有關這個景點的資料">
+              <img class="banner-img" src="./images/index/scenicSpotPhoto/cover.png" width="1110" height="400"
+                alt="俯瞰一座山頭, 其正中央開出一條雙向道柏油路, 沿著這條路開車將能夠一直往另一座山的側邊開過去">
+              <div class="title">
+                <span class="city-Name">新北市</span>　|　
+                <span class="scenicSpot-Name">不厭亭</span>
+              </div>
+            </a> -->
+          </div>
+          <div class="swiper-slide banner">
+            <!-- 以下為切版時使用, API串接完成後以JS動態方式生成以下各li內容 -->
+            <!-- <a href="#" aria-label="查看更多有關這個景點的資料">
+              <img class="banner-img" src="./images/index/scenicSpotPhoto/cover.png" width="1110" height="400"
+                alt="俯瞰一座山頭, 其正中央開出一條雙向道柏油路, 沿著這條路開車將能夠一直往另一座山的側邊開過去">
+              <div class="title">
+                <span class="city-Name">新北市</span>　|　
+                <span class="scenicSpot-Name">不厭亭</span>
+              </div>
+            </a> -->
+          </div>
+          <div class="swiper-slide banner">
+            <!-- 以下為切版時使用, API串接完成後以JS動態方式生成以下各li內容 -->
+            <!-- <a href="#" aria-label="查看更多有關這個景點的資料">
+              <img class="banner-img" src="./images/index/scenicSpotPhoto/cover.png" width="1110" height="400"
+                alt="俯瞰一座山頭, 其正中央開出一條雙向道柏油路, 沿著這條路開車將能夠一直往另一座山的側邊開過去">
+              <div class="title">
+                <span class="city-Name">新北市</span>　|　
+                <span class="scenicSpot-Name">不厭亭</span>
+              </div>
+            </a> -->
+          </div>
+          <div class="swiper-slide banner">
+            <!-- 以下為切版時使用, API串接完成後以JS動態方式生成以下各li內容 -->
+            <!-- <a href="#" aria-label="查看更多有關這個景點的資料">
+              <img class="banner-img" src="./images/index/scenicSpotPhoto/cover.png" width="1110" height="400"
+                alt="俯瞰一座山頭, 其正中央開出一條雙向道柏油路, 沿著這條路開車將能夠一直往另一座山的側邊開過去">
+              <div class="title">
+                <span class="city-Name">新北市</span>　|　
+                <span class="scenicSpot-Name">不厭亭</span>
+              </div>
+            </a> -->
+          </div>
+          <div class="swiper-slide banner">
+            <!-- 以下為切版時使用, API串接完成後以JS動態方式生成以下各li內容 -->
+            <!-- <a href="#" aria-label="查看更多有關這個景點的資料">
+              <img class="banner-img" src="./images/index/scenicSpotPhoto/cover.png" width="1110" height="400"
+                alt="俯瞰一座山頭, 其正中央開出一條雙向道柏油路, 沿著這條路開車將能夠一直往另一座山的側邊開過去">
+              <div class="title">
+                <span class="city-Name">新北市</span>　|　
+                <span class="scenicSpot-Name">不厭亭</span>
+              </div>
+            </a> -->
+          </div>
+        </div>
+        <button class="narrow-button left-narrow" aria-label="查看前一張圖片">
+          <i class="fa-solid fa-circle-chevron-left"></i>
+        </button>
+        <button class="narrow-button right-narrow" aria-label="查看後一張圖片">
+          <i class="fa-solid fa-circle-chevron-right"></i>
+        </button>
+        <div class="swiper-pagination pagination-position"></div>
+      </div>
+
+      <!-- 以下為切版時使用, 換上Swiper圖片輪播套件後已不使用 -->
+      <!-- <div class="banner">
+        <a href="#" aria-label="查看更多有關這個景點的資料">
+          <img src="./images/index/scenicSpotPhoto/cover.png" width="1140" height="400"
+            alt="俯瞰一座山頭, 其正中央開出一條雙向道柏油路, 沿著這條路開車將能夠一直往另一座山的側邊開過去">
+          <div class="title">新北市 | 不厭亭</div>
+        </a>
+        <button class="narrow-button left-narrow" aria-label="查看前一張圖片">
+          <i class="fa-solid fa-circle-chevron-left"></i>
+        </button>
+        <button class="narrow-button right-narrow" aria-label="查看後一張圖片">
+          <i class="fa-solid fa-circle-chevron-right"></i>
+        </button>
+      </div> -->
+
+      <div class="recent-activity">
+        <div class="topic-title">
+          <h4>近期活動</h4>
+          <a href="./Activity.html" aria-label="查看更多有關活動的資料">查看更多活動 > </a>
+        </div>
+        <ul class="activity-list">
+          <!-- 以下為切版時使用, API串接完成後以JS動態方式生成以下各li內容 -->
+          <!-- <li class="card">
+            <div class="photo">
+              <a href="#" aria-label="查看更多有關這個活動的資料">
+                <img src="./images/index/eventPhotos/2021 日月潭花火音樂嘉年華.png" width="158" height="160" alt="">
+              </a>
+            </div>
+            <div class="container">
+              <div class="event">
+                <div class="date">
+                  <span class="startDate">2021/10/30</span> ~ 
+                  <span class="endDate">2021/11/13</span>
+                </div>
+                <div class="title">2021 日月潭花火音樂嘉年華</div>
+              </div>
+              <div class="location">
+                <i class="fa-solid fa-location-dot location-icon">
+                  <span class="location-name">南投縣</span>
+                </i>
+                <a href="#" aria-label="查看更多有關此資料的詳細內容">詳細介紹 > </a>
+              </div>
+            </div>
+          </li>
+          <li class="card">
+            <div class="photo">
+              <a href="#" aria-label="查看更多有關這個活動的資料">
+                <img src="./images/index/eventPhotos/山城花語溫泉系列活動－寶來不老溫泉季.png" width="158" height="160" alt="">
+              </a>
+            </div>
+            <div class="container">
+              <div class="event">
+                <div class="date">
+                  <span class="startDate">2021/10/30</span> ~ <span class="endDate">2022/02/08</span>
+                </div>
+                <div class="title">山城花語溫泉系列活動－寶來不老溫泉季</div>
+              </div>
+              <div class="location">
+                <i class="fa-solid fa-location-dot location-icon">
+                  <span class="location-name">高雄市</span>
+                </i>
+                <a href="#" aria-label="查看更多有關此資料的詳細內容">詳細介紹 > </a>
+              </div>
+          </li>
+          <li class="card">
+            <div class="photo">
+              <a href="#" aria-label="查看更多有關這個活動的資料">
+                <img src="./images/index/eventPhotos/新北市萬金石馬拉松.png" width="158" height="160" alt="">
+              </a>
+            </div>
+            <div class="container">
+              <div class="event">
+                <div class="date">
+                  <span class="startDate">2021/11/21</span> ~ <span class="endDate">2021/11/21</span>
+                </div>
+                <div class="title">新北市萬金石馬拉松</div>
+              </div>
+              <div class="location">
+                <i class="fa-solid fa-location-dot location-icon">
+                  <span class="location-name">新北市</span>
+                </i>
+                <a href="#" aria-label="查看更多有關此資料的詳細內容">詳細介紹 > </a>
+              </div>
+            </div>
+          </li>
+          <li class="card">
+            <div class="photo">
+              <a href="#" aria-label="查看更多有關這個活動的資料">
+                <img src="./images/index/eventPhotos/2021 金門坑道音樂節.png" width="158" height="160" alt="">
+              </a>
+            </div>
+            <div class="container">
+              <div class="event">
+                <div class="date">
+                  <span class="startDate">2021/11/27</span> ~ <span class="endDate">2021/11/28</span>
+                </div>
+                <div class="title">2021 金門坑道音樂節</div>
+              </div>
+              <div class="location">
+                <i class="fa-solid fa-location-dot location-icon">
+                  <span class="location-name">金門縣</span>
+                </i>
+                <a href="#" aria-label="查看更多有關此資料的詳細內容">詳細介紹 > </a>
+              </div>
+            </div>
+          </li> -->
+        </ul>
+      </div>
+      <div class="scenicSpots">
+        <div class="topic-title">
+          <h4>熱門打卡景點</h4>
+          <a href="./ScenicSpot.html" aria-label="查看更多景點的資料">查看更多景點 > </a>
+        </div>
+        <ul class="list">
+          <!-- 以下為切版時使用, API串接完成後以JS動態方式生成以下各li內容 -->
+          <!-- <li class="card">
+            <a href="#" aria-label="查看更多有關此資料的詳細內容">
+              <div class="photo">
+                <img src="./images/index/hotspotPhotos/龜山島牛奶海.png" width="255" height="200" alt="">
+              </div>
+            </a>
+            <span class="name">龜山島牛奶海</span>
+            <div class="location">
+              <i class="fa-solid fa-location-dot location-icon">
+                <div class="location-name">宜蘭縣</div>
+              </i>
+            </div>
+          </li>
+          <li class="card">
+            <a href="#" aria-label="查看更多有關此資料的詳細內容">
+              <div class="photo">
+                <img src="./images/index/hotspotPhotos/高美濕地.png" width="255" height="200" alt="">
+              </div>
+            </a>
+            <span class="name">高美濕地(高美野生動...</span>
+            <div class="location">
+              <i class="fa-solid fa-location-dot location-icon">
+                <div class="location-name">臺中市</div>
+              </i>
+            </div>
+          </li>
+          <li class="card">
+            <a href="#" aria-label="查看更多有關此資料的詳細內容">
+              <div class="photo">
+                <img src="./images/index/hotspotPhotos/溪頭自然教育園區.png" width="255" height="200" alt="">
+              </div>
+            </a>
+            <span class="name">溪頭自然教育園區</span>
+            <div class="location">
+              <i class="fa-solid fa-location-dot location-icon">
+                <div class="location-name">南投縣</div>
+              </i>
+            </div>
+          </li>
+          <li class="card">
+            <a href="#" aria-label="查看更多有關此資料的詳細內容">
+              <div class="photo">
+                <img src="./images/index/hotspotPhotos/九份老街.png" width="255" height="200" alt="">
+              </div>
+            </a>
+            <span class="name">九份老街</span>
+            <div class="location">
+              <i class="fa-solid fa-location-dot location-icon">
+                <div class="location-name">新北市</div>
+              </i>
+            </div>
+          </li> -->
+        </ul>
+      </div>
+      <div class="restaurants">
+        <div class="topic-title">
+          <h4>一再回訪美食</h4>
+          <a href="./Restaurant.html" aria-label="查看更多美食的資料">查看更多美食 > </a>
+        </div>
+        <ul class="list">
+          <!-- 以下為切版時使用, API串接完成後以JS動態方式生成以下各li內容 -->
+          <!-- <li class="card">
+            <a href="#" aria-label="查看更多有關此資料的詳細內容">
+              <div class="photo">
+                <img src="./images/index/mealPhotos/金都餐廳.png" width="255" height="200" alt="">
+              </div>
+            </a>
+            <span class="name">金都餐廳</span>
+            <div class="location">
+              <i class="fa-solid fa-location-dot location-icon">
+                <div class="location-name">南投縣</div>
+              </i>
+            </div>
+          </li>
+          <li class="card">
+            <a href="#" aria-label="查看更多有關此資料的詳細內容">
+              <div class="photo">
+                <img src="./images/index/mealPhotos/一中8兩碳烤雞排.png" width="255" height="200" alt="">
+              </div>
+            </a>
+            <span class="name">一中8兩碳烤雞排</span>
+            <div class="location">
+              <i class="fa-solid fa-location-dot location-icon">
+                <div class="location-name">臺中市</div>
+              </i>
+            </div>
+          </li>
+          <li class="card">
+            <a href="#" aria-label="查看更多有關此資料的詳細內容">
+              <div class="photo">
+                <img src="./images/index/mealPhotos/名根烤肉食材宅配外送.png" width="255" height="200" alt="">
+              </div>
+            </a>
+            <span class="name">名根烤肉食材宅配外送</span>
+            <div class="location">
+              <i class="fa-solid fa-location-dot location-icon">
+                <div class="location-name">新北市</div>
+              </i>
+            </div>
+          </li>
+          <li class="card">
+            <a href="#" aria-label="查看更多有關此資料的詳細內容">
+              <div class="photo">
+                <img src="./images/index/mealPhotos/石桌羊肉店.png" width="255" height="200" alt="">
+              </div>
+            </a>
+            <span class="name">石桌羊肉店</span>
+            <div class="location">
+              <i class="fa-solid fa-location-dot location-icon">
+                <div class="location-name">嘉義縣</div>
+              </i>
+            </div>
+          </li> -->
+        </ul>
+      </div>
+      <div class="hotels">
+        <div class="topic-title">
+          <h4>舒適放鬆旅宿</h4>
+          <a href="./Hotel.html" aria-label="查看更多旅宿的資料">查看更多住宿 > </a>
+        </div>
+        <ul class="list">
+          <!-- 以下為切版時使用, API串接完成後以JS動態方式生成以下各li內容 -->
+          <!-- <li class="card">
+            <a href="#" aria-label="查看更多有關此資料的詳細內容">
+              <div class="photo">
+                <img src="./images/index/hotelPhotos/南投縣_湖景渡假民宿.jpg" width="255" height="200" alt="">
+              </div>
+            </a>
+            <span class="name">湖景渡假民宿</span>
+            <div class="location">
+              <i class="fa-solid fa-location-dot location-icon">
+                <div class="location-name">南投縣</div>
+              </i>
+            </div>
+          </li>
+          <li class="card">
+            <a href="#" aria-label="查看更多有關此資料的詳細內容">
+              <div class="photo">
+                <img src="./images/index/hotelPhotos/南投縣_杉林溪大飯店.jpg" width="255" height="200" alt="">
+              </div>
+            </a>
+            <span class="name">杉林溪大飯店</span>
+            <div class="location">
+              <i class="fa-solid fa-location-dot location-icon">
+                <div class="location-name">南投縣</div>
+              </i>
+            </div>
+          </li>
+          <li class="card">
+            <a href="#" aria-label="查看更多有關此資料的詳細內容">
+              <div class="photo">
+                <img src="./images/index/hotelPhotos/臺東縣_海明威民宿.jpg" width="255" height="200" alt="">
+              </div>
+            </a>
+            <span class="name">海明威民宿</span>
+            <div class="location">
+              <i class="fa-solid fa-location-dot location-icon">
+                <div class="location-name">臺東縣</div>
+              </i>
+            </div>
+          </li>
+          <li class="card">
+            <a href="#" aria-label="查看更多有關此資料的詳細內容">
+              <div class="photo">
+                <img src="./images/index/hotelPhotos/南投縣_淳境景觀休閒山莊.jpg" width="255" height="200" alt="">
+              </div>
+            </a>
+            <span class="name">淳境景觀休閒山莊</span>
+            <div class="location">
+              <i class="fa-solid fa-location-dot location-icon">
+                <div class="location-name">南投縣</div>
+              </i>
+            </div>
+          </li> -->
+        </ul>
+      </div>
+    </main>
+    <footer class="copyright">
+      <div class="website-declaration">
+        <a href="./index.html">台灣走走・Tai Walk</a>
+        <span class="website-owner">© Code: 
+          <a href="mailto:soarfox@gmail.com?subject=有關台灣走走-Tai Walk網站" aria-label="寫電子郵件給網站管理者"">Howard</a> / Design: 
+          <a href="https://www.figma.com/file/5HQAZ2bunGNKma2fwU0aNZ/The-F2E-3rd---Week1-%E5%8F%B0%E7%81%A3%E6%97%85%E9%81%8A%E6%99%AF%E9%BB%9E%E5%B0%8E%E8%A6%BD?type=design&node-id=0-1&mode=design" target="_blank">Breakfast</a>
+        </span>
+      </div>
+      <div class="data-source">
+        <a href="https://tdx.transportdata.tw/" target="_blank">資料介接：交通部TDX平臺</a>
+      </div>
+    </footer>
+  </div>
+  <!-- 引用Font Awesome的圖示 -->
+  <script src="https://kit.fontawesome.com/e4d54ea5ca.js" crossorigin="anonymous"></script>
+  <!-- 引用Swiper圖片輪播 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+  <script src="./js/hamburger_menu.js"></script>
+  <!-- 因為有使用ES6的模組化語法(export和import), 故記得要加上type="module" -->
+  <script type="module" src="./js/index.js"></script>
+</body>
+
+</html>

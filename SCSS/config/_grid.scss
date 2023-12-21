@@ -1,0 +1,19 @@
+@mixin iPad {
+  @media (max-width: 768px) {
+    @content
+  }
+};
+
+// 螢幕解析度在iPad以下的平板電腦
+@mixin tablet {
+  @media (max-width: 767px){
+    @content
+  }
+};
+
+// Apple iPhone 12 Pro Max / iPhone 13 Pro Max / iPhone 14 Plus直式螢幕解析度為428px
+@mixin mobile {
+  @media (max-width: 428px){
+    @content
+  }
+};

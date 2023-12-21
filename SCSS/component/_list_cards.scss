@@ -1,0 +1,118 @@
+// 首頁內的".scenicSpots .list", ".restaurants .list"和".hotels .list"的基礎樣式寫此處, 此scss與"搜尋結果頁"內的".list .card{...}"共用, 且搜尋結果頁的樣式有再做微調
+
+.topic-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 12px;
+
+  @include mobile {
+    padding-bottom: 0px;
+    flex-wrap: wrap;
+  }
+
+  h4 {
+    font-size: $h2-font-size;
+    font-weight: 300;
+
+    @include tablet {
+      padding: 0px 30px 12px 0px;
+    }
+
+    @include mobile {
+      font-size: $h4-font-size;
+    }
+  }
+
+  a {
+    color: $OrangeRed;
+    text-decoration: none;
+    font-weight: bold;
+
+    &:hover {
+      color: $DeepGreen;
+    }
+
+    @include mobile {
+      font-size: $h4-font-size;
+    }
+  }
+}
+
+.list {
+  display: flex;
+
+  /* 做出scroll image/card的方式如下 */
+  @include mobile {
+    display: flex;
+    /* 為了要實現scroll image/card的效果, 故將所有"熱門打卡景點"和"一再回訪美食"的元素都各自於同一行顯示, 即不進行元素的換行 */
+    white-space: nowrap;
+    /* 將超出此容器的內容隱藏起來(overflow-x設為auto, overflow-y設為hidden), 藉此將card的y軸捲軸隱藏起來 */
+    overflow: auto hidden;
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    margin-right: 15px;
+    // 設定最小卡片寬度, 藉此讓卡片維持一定程度的大小, 請需留意避免網頁出現x軸
+    min-width: 80px;
+    width: 25%;
+
+    @include mobile {
+      min-width: 150px;
+      padding: 12px 0px;
+      margin: 12px;
+    }
+
+    .photo {
+      // 為避免API回傳的圖片有大有小, 在此統一設定圖片外層div標籤的寬高, 且UI稿的圖片預設為width="255", height="200", 故圖片外層容器的寬高比例應為255:200, 兩者均可除以最大公因數(5)之後, 得到比例51:40, 使圖片完全填滿此容器大小且不變形; 至於圖片的寬高設定百分比請見檔案"./SCSS/component/_photo.scss"內的img設定值
+      width: 100%;
+      aspect-ratio: 51 / 40;
+      // 將圖片被hover時會放大的效果之超出框框的部分隱藏掉
+      overflow: hidden;
+      // (UI稿的圖片本身自己已有border-radius效果,) 在實際串接API後, 為了讓真實圖片資料在放大時不要出現邊緣的直角, 此處需要設定border-radius效果
+      border-radius: 20px;
+      // 因為手機的iOS系統在進行img的transform放大圖片行為, 圖片會短暫出現四周有直角的狀態, 故需要在img{...}元素的父層元素, 加入一個具有有效值的transform, 藉此讓border-radius能夠正常運作而不會出現圖片四周的直角
+      transform: scale(1);
+    
+      img {
+        // 使用transition:transform 0.3s;則會造成圖片周圍會出現原本的直角後又瞬間消失, 造成稍微閃爍的效果, 但這對使用者體驗不佳, 故直接改成transition: 0.3s;使得任何CSS屬性的變化, 都將在0.3秒內產生平滑過渡效果, 這樣就不會閃爍
+        transition: 0.3s;
+        width: 100%;
+        height: 100%;
+        // 確保圖片的寬高比例維持1:1, 讓直式圖片被拉伸或超出邊界
+        aspect-ratio: 1/1;
+        // 按照圖片長寬比例延伸圖片且確保畫面不會有空白
+        object-fit: cover;
+
+        &:hover, &:active {
+          transform: scale(1.1);
+        }
+      }
+    }
+
+    .location {
+      padding-top: 6px;
+
+      .location-name {
+        display: inline-block;
+      }
+    }
+  }
+
+  .name {
+    font-size: $h4-font-size;
+    line-height: 1.5;
+    font-weight: 700;
+    padding-top: 10px;
+    /* 將超出此name容器的文字隱藏起來, 且讓文字不換行, 藉此將多出來的文字使用省略號(ellipsis)表示 */
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    @include tablet {
+      font-size: $h5-font-size;
+    }
+  }
+}
